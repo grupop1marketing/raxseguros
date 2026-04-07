@@ -993,66 +993,6 @@
 
     </style>
 </head>
-
-<script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwoTIjyccgmWsVmktVtY-mM39HhzOx7b69usT507X4AVTvMQkOyDuNKnx-msBzVOXMpow/exec";
-
-  // Máscara CPF: 000.000.000-00
-  document.querySelector('[name="cpf"]').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '').slice(0, 11);
-    v = v.replace(/(\d{3})(\d)/, '$1.$2');
-    v = v.replace(/(\d{3})(\d)/, '$1.$2');
-    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    this.value = v;
-  });
-
-  // Máscara WhatsApp: (00) 00000-0000
-  document.querySelector('[name="whatsapp"]').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '').slice(0, 11);
-    v = v.replace(/^(\d{2})(\d)/, '($1) $2');
-    v = v.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
-    this.value = v;
-  });
-
-  // Envio do formulário
-  document.getElementById('rax-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const btn = this.querySelector('button[type=submit]');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-
-    const dados = {
-      tipo:          'residencial',
-      nome:          this.querySelector('[name="nome"]').value,
-      cpf:           this.querySelector('[name="cpf"]').value,
-      whatsapp:      this.querySelector('[name="whatsapp"]').value,
-      bairro:        this.querySelector('[name="bairro"]').value,
-      valor_imovel:  this.querySelector('[name="valor_imovel"]').value,
-      renda:         this.querySelector('[name="renda"]').value,
-      possui_seguro: this.querySelector('[name="ja_possui"]:checked').value,
-    };
-
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-      });
-
-      btn.textContent = 'Enviado com sucesso! ✓';
-      btn.style.background = '#22c55e';
-      this.reset();
-    } catch (err) {
-      btn.disabled = false;
-      btn.textContent = 'SOLICITAR COTAÇÃO GRATUITA';
-      alert('Erro ao enviar. Tente novamente.');
-    }
-  });
-</script>
-    
 <body class="ds-bg-dynamic">
 
     <!-- NAVBAR -->
@@ -1446,6 +1386,65 @@
             <p>&copy; 2026 RAX Seguros. Todos os direitos reservados. <br> Desenvolvido por <a href="https://grupop1.com.br" target="_blank" style="color: var(--rx-primary); text-decoration: none;">P1 Marketing</a></p>
         </div>
     </footer>
+
+    <script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwoTIjyccgmWsVmktVtY-mM39HhzOx7b69usT507X4AVTvMQkOyDuNKnx-msBzVOXMpow/exec";
+
+  // Máscara CPF: 000.000.000-00
+  document.querySelector('[name="cpf"]').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    this.value = v;
+  });
+
+  // Máscara WhatsApp: (00) 00000-0000
+  document.querySelector('[name="whatsapp"]').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/^(\d{2})(\d)/, '($1) $2');
+    v = v.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+    this.value = v;
+  });
+
+  // Envio do formulário
+  document.getElementById('rax-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const btn = this.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const dados = {
+      tipo:          'residencial',
+      nome:          this.querySelector('[name="nome"]').value,
+      cpf:           this.querySelector('[name="cpf"]').value,
+      whatsapp:      this.querySelector('[name="whatsapp"]').value,
+      bairro:        this.querySelector('[name="bairro"]').value,
+      valor_imovel:  this.querySelector('[name="valor_imovel"]').value,
+      renda:         this.querySelector('[name="renda"]').value,
+      possui_seguro: this.querySelector('[name="ja_possui"]:checked').value,
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+
+      btn.textContent = 'Enviado com sucesso! ✓';
+      btn.style.background = '#22c55e';
+      this.reset();
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'SOLICITAR COTAÇÃO GRATUITA';
+      alert('Erro ao enviar. Tente novamente.');
+    }
+  });
+</script>
 
     <!-- Script to trigger entrance animations on scroll -->
     <script>
