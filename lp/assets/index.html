@@ -1437,9 +1437,16 @@
         body: JSON.stringify(dados)
       });
 
-      btn.textContent = 'Enviado com sucesso! ✓';
+btn.textContent = 'Enviado com sucesso! ✓';
       btn.style.background = '#22c55e';
       this.reset();
+ 
+      // Redireciona para o WhatsApp após envio
+      const whatsappNumero = '5534997170229';
+      const mensagem = encodeURIComponent('Olá! Acabei de preencher o formulário de cotação no site da RAX Seguros e gostaria de mais informações. 😊');
+      setTimeout(() => {
+        window.open(`https://wa.me/${whatsappNumero}?text=${mensagem}`, '_blank');
+      }, 1500);
     } catch (err) {
       btn.disabled = false;
       btn.textContent = 'SOLICITAR COTAÇÃO GRATUITA';
