@@ -1429,29 +1429,38 @@
       possui_seguro: this.querySelector('[name="ja_possui"]:checked').value,
     };
 
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-      });
-
-btn.textContent = 'Enviado com sucesso! ✓';
-      btn.style.background = '#22c55e';
-      this.reset();
+    const whatsappNumero = '5534997170229';
+    const mensagem = encodeURIComponent('Olá! Acabei de preencher o formulário de cotação no site da RAX Seguros e gostaria de mais informações. 😊');
+    const whatsappURL = `https://wa.me/${whatsappNumero}?text=${mensagem}`;
  
-      // Redireciona para o WhatsApp após envio
-      const whatsappNumero = '5534997170229';
-      const mensagem = encodeURIComponent('Olá! Acabei de preencher o formulário de cotação no site da RAX Seguros e gostaria de mais informações.');
-      setTimeout(() => {
-        window.open(`https://wa.me/${whatsappNumero}?text=${mensagem}`, '_blank');
-      }, 1500);
+    btn.textContent = 'Enviando...';
+ 
+    // Dispara o fetch e aguarda no máximo 2s antes de redirecionar.
+    // Garante a gravação na planilha sem bloquear o usuário
+    // e sem acionar o bloqueio de pop-up do Safari/iOS.
+    const timeout = new Promise(resolve => setTimeout(resolve, 2000));
+ 
+    try {
+      await Promise.race([
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dados)
+        }),
+        timeout
+      ]);
     } catch (err) {
-      btn.disabled = false;
-      btn.textContent = 'SOLICITAR COTAÇÃO GRATUITA';
-      alert('Erro ao enviar. Tente novamente.');
+      // Mesmo em caso de erro, redireciona para não perder o lead
+      console.error('Erro ao enviar dados:', err);
     }
+ 
+    btn.textContent = 'Enviado com sucesso! ✓';
+    btn.style.background = '#22c55e';
+    this.reset();
+ 
+    // Redireciona na mesma aba — sem pop-up, sem bloqueio do Safari
+    window.location.href = whatsappURL;
   });
 </script>
 
